@@ -1,0 +1,27 @@
+{
+  "name": "simple_messenger_app",
+  "version": "0.0.1",
+  "description": "Simple Messenger App based on vanilla js + handlebars + scss",
+  "author": "Egor Novozhilov <e.novozhilov@docsinbox.ru>",
+  "homepage": "https://heuristic-kalam-dfa7e9.netlify.app/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ENoLTC/mf.messenger.praktikum.yandex"
+  },
+  "scripts": {
+    "node": "node server.js",
+    "dev": "parcel watch static/*.html --no-source-maps",
+    "build": "parcel build static/*.html --out-dir dist --no-source-maps",
+    "start": "parcel build static/*.html --out-dir dist --no-source-maps && node server.js"
+  },
+  "devDependencies": {
+    "express": "^4.17.1",
+    "handlebars": "^4.7.7",
+    "parcel-bundler": "^1.12.5",
+    "parcel-plugin-handlebars-precompile": "^1.0.2",
+    "sass": "^1.32.8"
+  },
+  "engines": {
+    "node": ">12"
+  }
+}

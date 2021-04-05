@@ -1,0 +1,47 @@
+@import 'src/shared/variables';
+
+.chat__messages {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  height: 100%;
+  overflow-y: scroll;
+  flex: 1 1 auto;
+  margin: 10px;
+
+  .chat__message-date {
+    margin: 30px;
+    font-size: $font-size-medium;
+    text-align: center;
+    color: $secondary-grey;
+  }
+
+  .chat__article {
+    display: flex;
+    width: fit-content;
+    padding: 10px;
+    margin: 10px 0;
+    border: 0;
+    border-radius: 12px;
+    background-color: $primary-grey;
+    line-height: 15px;
+
+    &-incoming {
+      border-top-left-radius: 0;
+    }
+
+    &-outcoming {
+      border-bottom-right-radius: 0;
+      background-color: $secondary-blue;
+      align-self: flex-end;
+    }
+
+    &__time {
+      font-size: $font-size-small;
+      line-height: 9px;
+      align-self: flex-end;
+      margin-left: 16px;
+      color: $secondary-grey;
+    }
+  }
+}

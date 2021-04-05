@@ -1,0 +1,65 @@
+@import 'src/shared/variables';
+
+.button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 12px 0;
+  border: none;
+  border-radius: 8px;
+
+  &:focus {
+    outline: 0;
+  }
+
+  &_primary {
+    width: 100%;
+    cursor: pointer;
+    background-color: $secondary;
+    color: $white;
+  }
+
+  &_text-like {
+    cursor: pointer;
+    padding: 0;
+    margin-top: 14px;
+    background: none;
+    width: fit-content;
+    align-self: center;
+    color: $secondary;
+  }
+
+  &_error {
+    color: $primary-red;
+  }
+
+  &_stop-editing {
+    display: flex;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: $primary-blue;
+    cursor: pointer;
+  }
+
+  &_text-blue {
+    color: $primary-blue;
+  }
+
+  &_text-red {
+    color: $primary-red;
+  }
+
+  &_profile-change {
+    display: flex;
+    width: 100%;
+    justify-content: flex-start;
+    text-align: left;
+    margin: 0;
+    padding: 10px 0;
+    border: 0;
+    border-radius: 0;
+    border-bottom: 1px solid $primary-grey;
+  }
+}

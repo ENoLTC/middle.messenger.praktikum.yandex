@@ -1,0 +1,44 @@
+@import 'src/shared/variables';
+
+.login {
+  width: 340px;
+  height: 460px;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background: $white;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
+  border-radius: 12px;
+
+  &__title {
+    flex-grow: 0;
+    margin: 20px 0;
+    text-align: center;
+    font-size: $font-size-h1;
+    font-weight: 500;
+    cursor: default;
+  }
+
+  &__form {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex-grow: 1;
+    margin-top: 20px;
+
+    .login__inputs {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 50px;
+
+      .input-container_login {
+
+      }
+
+      .input-container_password {
+        margin-top: 16px;
+      }
+    }
+  }
+}

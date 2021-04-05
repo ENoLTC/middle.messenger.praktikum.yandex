@@ -1,0 +1,47 @@
+@import 'src/shared/variables';
+
+.input-container {
+  position: relative;
+
+  &_password {
+    margin-top: 16px;
+  }
+
+  .input {
+    width: 100%;
+    padding: 7px 0;
+    margin: 12px 0 20px 0;
+    border: 0;
+    border-bottom: 1px solid $secondary;
+
+    &:focus {
+      outline: none;
+    }
+
+    &:focus + label, &:valid + label, &:not(:placeholder-shown) + label {
+      font-size: $font-size-small;
+      bottom: 52px;
+    }
+
+    &::placeholder {
+      color: transparent;
+    }
+  }
+
+  .label {
+    position: absolute;
+    pointer-events: none;
+    cursor: text;
+    bottom: 27px;
+    left: 0;
+    width: 100%;
+    color: $secondary-grey;
+    transition: 0.2s;
+
+    &_invalid {
+      font-size: $font-size-small;
+      color: $primary-red;
+      bottom: 0;
+    }
+  }
+}

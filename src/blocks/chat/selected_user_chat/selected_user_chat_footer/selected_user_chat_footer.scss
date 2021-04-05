@@ -1,0 +1,54 @@
+@import 'src/shared/variables';
+
+.chat__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 10px 10px 0;
+  border-top: 1px solid $primary-grey;
+
+  &__button-pin {
+    display: flex;
+    border: 0;
+    padding: 0;
+    margin-right: 10px;
+    background-color: transparent;
+    cursor: pointer;
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  &__button-send {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    border: 0;
+    background-color: $primary-blue;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    padding: 0;
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  &__input {
+    display: flex;
+    flex-grow: 1;
+    background: $primary-grey;
+    border-radius: 30px;
+    border: 0;
+    padding: 10px 20px;
+    margin-right: 10px;
+
+    &:focus {
+      outline: none;
+    }
+  }
+}

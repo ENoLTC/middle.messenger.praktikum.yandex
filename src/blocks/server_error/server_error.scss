@@ -1,0 +1,19 @@
+@import 'src/shared/variables';
+
+.server_error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: $white;
+
+  &__code {
+    font-size: $font-size-code;
+    margin-bottom: 20px;
+  }
+
+  &__message {
+    font-size: $font-size-h1;
+    margin-bottom: 70px;
+  }
+}

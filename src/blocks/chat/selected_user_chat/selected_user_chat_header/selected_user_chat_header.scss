@@ -1,0 +1,38 @@
+@import 'src/shared/variables';
+
+.chat__header {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 10px 10px;
+  border-bottom: 1px solid $primary-grey;
+
+  &__user {
+    display: flex;
+    align-items: center;
+
+    &__avatar {
+      display: flex;
+      border-radius: 50%;
+      background-color: $primary-grey;
+      width: 35px;
+      height: 35px;
+      margin-right: 10px;
+    }
+
+    &__name {
+      font-weight: 500;
+    }
+  }
+
+  &__button-more {
+    border: 0;
+    cursor: pointer;
+    background-color: transparent;
+
+    &:focus {
+      outline: none;
+    }
+  }
+}

@@ -1,0 +1,14 @@
+@import 'src/shared/variables';
+
+.chats-menu {
+  &__header {
+    margin: 20px 10px 14px;
+  }
+}
+
+.chat-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
