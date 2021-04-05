@@ -1,5 +1,5 @@
 @import 'shared/shared';
-@import '_fonts';
+@import 'fonts';
 
 /* Указываем box sizing */
 *,
@@ -11,8 +11,8 @@
 }
 
 /* Убираем внутренние отступы */
-ul[class],
-ol[class] {
+ul,
+ol {
   padding: 0;
 }
 
@@ -23,8 +23,8 @@ h2,
 h3,
 h4,
 p,
-ul[class],
-ol[class],
+ul,
+ol,
 li,
 figure,
 figcaption,
@@ -36,16 +36,16 @@ dd {
 
 /* Выставляем основные настройки по-умолчанию для body */
 body {
+  font-size: 16px;
+  line-height: 1;
   min-height: 100vh;
   scroll-behavior: smooth;
   text-rendering: optimizeSpeed;
-  line-height: 1;
-  font-size: 16px;
 }
 
 /* Удаляем стандартную стилизацию для всех ul и il, у которых есть атрибут class*/
-ul[class],
-ol[class] {
+ul,
+ol {
   list-style: none;
 }
 
