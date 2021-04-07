@@ -1,20 +1,21 @@
-import {EventBus} from '../../services/index';
+import {EventBus} from '../../services';
 
 interface Props {
   [key: string]: any;
-};
+}
 
 interface Meta {
   tagName: string;
+  className?: string;
   props: Props;
 }
 
 export class Component {
   static EVENTS = {
-    INIT: "init",
-    FLOW_CDM: "flow:component-did-mount",
-    FLOW_CDU: "flow:component-did-update",
-    FLOW_RENDER: "flow:render",
+    INIT: 'init',
+    FLOW_CDM: 'flow:component-did-mount',
+    FLOW_CDU: 'flow:component-did-update',
+    FLOW_RENDER: 'flow:render',
   };
 
   _element: HTMLElement | null = null;
@@ -24,19 +25,20 @@ export class Component {
 
   /** JSDoc
    * @param {string} tagName
+   * @param {string | undefined} className
    * @param {Object} props
    *
    * @returns {void}
    */
-  constructor(tagName = "div", props: Props = {}) {
+  constructor(tagName = 'div', className: string | undefined = undefined, props: Props = {}) {
     this.eventBus = new EventBus();
     this._meta = {
       tagName,
-      props
+      className,
+      props,
     };
 
     this.props = this._makePropsProxy(props);
-
 
     this._registerEvents();
     this.eventBus.emit(Component.EVENTS.INIT);
@@ -49,9 +51,24 @@ export class Component {
     this.eventBus.on(Component.EVENTS.FLOW_RENDER, this._render.bind(this));
   }
 
+  _addEvents() {
+    const {events = {}} = this.props;
+    Object.keys(events).forEach((eventName) => {
+      this._element!.addEventListener(eventName, events[eventName]);
+    });
+  }
+
+  _removeEvents() {
+    const {events = {}} = this.props;
+
+    Object.keys(events).forEach((eventName) => {
+      this._element!.removeEventListener(eventName, events[eventName]);
+    });
+  }
+
   _createResources() {
-    const { tagName } = this._meta;
-    this._element = this._createDocumentElement(tagName);
+    const {tagName, className} = this._meta;
+    this._element = this._createDocumentElement(tagName, className);
   }
 
   init() {
@@ -93,12 +110,14 @@ export class Component {
   }
 
   _render() {
-    const component: any = this.render();
-    // Этот небезопасный метод для упрощения логики
-    // Используйте шаблонизатор из npm или напишите свой безопасный
-    // Нужно не в строку компилировать (или делать это правильно),
-    // либо сразу в DOM-элементы возвращать из compile DOM-ноду
-    this._element!.innerHTML = component;
+    const html: string = this.render();
+    this._removeEvents();
+    if (html.length) {
+      const template = document.createElement('template');
+      template.innerHTML = html.trim();
+      this._element?.appendChild(template.content);
+    }
+    this._addEvents();
   }
 
   // Может переопределять пользователь, необязательно трогать
@@ -111,25 +130,27 @@ export class Component {
   _makePropsProxy(props: Props) {
     const proxyProps = new Proxy(props, {
       deleteProperty(target, prop) { // перехватываем удаление свойства
-        throw new Error("нет доступа");
-      }
+        throw new Error('нет доступа');
+      },
     });
 
     return proxyProps;
   }
 
-  _createDocumentElement(tagName: string) {
+  _createDocumentElement(tagName: string, className?: string) {
     // Можно сделать метод, который через фрагменты в цикле создаёт сразу несколько блоков
     const element = document.createElement(tagName);
-    element.innerText = this.props.text;
+    if (className) {
+      element.classList.add(className);
+    }
     return element;
   }
 
   show() {
-    this.getContent()!.style.display = "block";
+    this.getContent()!.style.display = 'block';
   }
 
   hide() {
-    this.getContent()!.style.display = "none";
+    this.getContent()!.style.display = 'none';
   }
 }
