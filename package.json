@@ -10,20 +10,23 @@
   },
   "license": "(MIT OR Apache-2.0)",
   "scripts": {
-    "node": "node server.js",
+    "node": "node server.ts",
     "dev": "parcel watch static/*.html --no-source-maps",
     "build": "parcel build static/*.html --out-dir dist --no-source-maps",
-    "start": "parcel build static/*.html --out-dir dist --no-source-maps && node server.js"
+    "start": "parcel build static/*.html --out-dir dist --no-source-maps && node server.ts"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "handlebars": "^4.7.7"
   },
   "devDependencies": {
+    "@types/node": "^14.14.37",
     "@typescript-eslint/eslint-plugin": "^4.21.0",
     "@typescript-eslint/parser": "^4.21.0",
     "eslint": "^7.23.0",
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-config-airbnb-typescript": "^12.3.1",
     "eslint-plugin-import": "^2.22.1",
-    "express": "^4.17.1",
-    "handlebars": "^4.7.7",
     "parcel-bundler": "^1.12.5",
     "parcel-plugin-handlebars-precompile": "^1.0.2",
     "sass": "^1.32.8",
