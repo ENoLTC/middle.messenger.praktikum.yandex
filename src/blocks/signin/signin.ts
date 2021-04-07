@@ -1,8 +1,8 @@
 import Handlebars from 'handlebars';
 import {signinTemplate} from './signin.handlebars';
 import './signin.scss'
-import {compiledInput} from '../../components/input/input';
-import {compiledButton} from '../../components/button/button';
+import {compiledInput} from '../../components/input/Input';
+import {compiledButton} from '../../components/button/Button';
 import {context} from './signin_context';
 
 const template = Handlebars.compile(signinTemplate);

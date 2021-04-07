@@ -1,2 +1,2 @@
-export {buttonTemplate} from './button.handlebars';
-export {compiledButton} from './button';
+export {buttonTemplate} from './Button.handlebars';
+export {Button} from './Button';

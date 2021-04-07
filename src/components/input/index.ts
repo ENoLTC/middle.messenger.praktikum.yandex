@@ -1,2 +1,2 @@
-export {inputTemplate} from './input.handlebars';
-export {compiledInput} from './input';
+export {inputTemplate} from './Input.handlebars';
+export {Input} from './Input';
