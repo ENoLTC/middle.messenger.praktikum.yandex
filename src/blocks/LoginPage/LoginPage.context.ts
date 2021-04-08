@@ -1,9 +1,6 @@
-import {Input} from '../../components/Input';
-import {Button} from '../../components/Button';
-
 export const context = {
   inputs: {
-    login: new Input({
+    login: {
       type: 'text',
       name: 'login',
       labelName: 'Логин',
@@ -15,8 +12,8 @@ export const context = {
         input: [],
         label: [],
       },
-    }),
-    password: new Input({
+    },
+    password: {
       type: 'password',
       name: 'password',
       labelName: 'Пароль',
@@ -28,20 +25,20 @@ export const context = {
         input: [],
         label: [],
       },
-    }),
+    },
   },
   buttons: {
-    submit: new Button({
+    submit: {
       type: 'submit',
       name: 'login_button',
       buttonText: 'Авторизоваться',
       classes: ['button_primary'],
-    }),
-    signIn: new Button({
+    },
+    signIn: {
       type: 'button',
       name: 'login_form',
       buttonText: 'Нет аккаунта',
       classes: ['button_text-like'],
-    }),
+    },
   },
 };
