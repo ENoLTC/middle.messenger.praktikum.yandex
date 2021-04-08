@@ -18,7 +18,7 @@ export class Component {
     FLOW_RENDER: 'flow:render',
   };
 
-  _element: HTMLElement | null = null;
+  _element: Node = {} as Node;
   _meta: Meta = {} as Meta;
   props: Props = {} as Props;
   eventBus: EventBus = {} as EventBus;
@@ -112,12 +112,11 @@ export class Component {
   _render() {
     const html: string = this.render();
     this._removeEvents();
-    if (html.length) {
-      const template = document.createElement('template');
-      template.innerHTML = html.trim();
-      this._element?.appendChild(template.content);
-    }
+    const template = document.createElement('template');
+    template.innerHTML = html.trim();
+    this._element!.appendChild(template.content);
     this._addEvents();
+    return this._element;
   }
 
   // Может переопределять пользователь, необязательно трогать

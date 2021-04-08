@@ -1,0 +1,6 @@
+export const badgeTemplate = `
+  <div
+    class="badge{{#each classes}} {{this}}{{/each}}">
+    {{this.newMessages}}
+  </div>
+`;
