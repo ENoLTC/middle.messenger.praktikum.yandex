@@ -18,11 +18,11 @@ export class Component {
     FLOW_RENDER: 'flow:render',
   };
 
-  _element: Node = {} as Node;
-  _meta: Meta = {} as Meta;
-  props: Props = {} as Props;
-  eventBus: EventBus = {} as EventBus;
-
+  _element: HTMLElement = {} as HTMLElement;
+  _meta: Meta;
+  props: Props;
+  eventBus: EventBus;
+  DOMParser: DOMParser;
   /** JSDoc
    * @param {string} tagName
    * @param {string | undefined} className
@@ -39,6 +39,7 @@ export class Component {
     };
 
     this.props = this._makePropsProxy(props);
+    this.DOMParser = new DOMParser();
 
     this._registerEvents();
     this.eventBus.emit(Component.EVENTS.INIT);
@@ -87,6 +88,7 @@ export class Component {
   _componentDidUpdate(oldProps: Props, newProps: Props) {
     const response = this.componentDidUpdate(oldProps, newProps);
     if (response) {
+      // console.log('emit render after update')
       this.eventBus.emit(Component.EVENTS.FLOW_RENDER);
     }
   }
@@ -101,8 +103,10 @@ export class Component {
       return;
     }
 
-    this.props = {...this.props, ...nextProps};
-    this.eventBus.emit(Component.EVENTS.FLOW_CDU);
+    const oldProps = this.props;
+
+    this.props = Object.assign(this.props, nextProps);
+    this.eventBus.emit(Component.EVENTS.FLOW_CDU, oldProps, this.props);
   };
 
   get element() {
@@ -110,12 +114,18 @@ export class Component {
   }
 
   _render() {
-    const html: string = this.render();
+    // console.log('render')
+    const htmlString = this.render().trim();
+    // const parsedHTML = this.DOMParser.parseFromString(htmlString, 'text/html');
+    // const oldContent = this._element.firstChild;
+    // const newContent = parsedHTML.body.firstChild;
     this._removeEvents();
-    const template = document.createElement('template');
-    template.innerHTML = html.trim();
-    this._element!.appendChild(template.content);
+    console.log('oldElement', this._element)
+    // if (oldContent) oldContent.replaceWith(newContent);
+    // this._element.appendChild(newContent);
+    this._element.innerHTML = htmlString;
     this._addEvents();
+    console.log('newElement', this._element);
     return this._element;
   }
 
@@ -127,12 +137,17 @@ export class Component {
   }
 
   _makePropsProxy(props: Props) {
+    const that = this;
     const proxyProps = new Proxy(props, {
+      set(target, prop, value) {
+        target[prop] = value;
+        that.eventBus.emit(Component.EVENTS.FLOW_RENDER);
+        return true;
+      },
       deleteProperty(target, prop) { // перехватываем удаление свойства
         throw new Error('нет доступа');
       },
     });
-
     return proxyProps;
   }
 

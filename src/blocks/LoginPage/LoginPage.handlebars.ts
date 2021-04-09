@@ -1,6 +1,6 @@
 export const loginTemplate = `
   <section class="login">
-    <h1 class="login__title">Вход</h1>
+    <h1 class="login__title">{{tit}}</h1>
     <form name="login_form" class="login__form">
       <div class="login__inputs">
         {{{loginInput}}}

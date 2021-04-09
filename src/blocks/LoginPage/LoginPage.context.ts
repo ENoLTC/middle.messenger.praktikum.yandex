@@ -41,4 +41,5 @@ export const context = {
       classes: ['button_text-like'],
     },
   },
+  tit: 'tat',
 };
