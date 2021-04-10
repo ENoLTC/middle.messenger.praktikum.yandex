@@ -22,6 +22,7 @@ module.exports = {
     'max-len': 'off',
     'object-curly-spacing': 'off',
     'no-underscore-dangle': 'off',
+    'class-methods-use-this': 'off',
     'import/extensions': [
       'error',
       'ignorePackages',

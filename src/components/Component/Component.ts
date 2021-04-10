@@ -11,7 +11,7 @@ interface Meta {
 }
 
 export class Component {
-  static EVENTS = {
+  EVENTS = {
     INIT: 'init',
     FLOW_CDM: 'flow:component-did-mount',
     FLOW_CDU: 'flow:component-did-update',
@@ -20,6 +20,7 @@ export class Component {
 
   _element: HTMLElement = {} as HTMLElement;
   _meta: Meta;
+  _id: string;
   props: Props;
   eventBus: EventBus;
   DOMParser: DOMParser;
@@ -38,67 +39,77 @@ export class Component {
       props,
     };
 
-    this.props = this._makePropsProxy(props);
+    this._id = `uniq${parseInt(String(Math.random() * 1000000), 10)}`;
+    this.props = this._makePropsProxy({_key: this._id, ...props});
     this.DOMParser = new DOMParser();
 
     this._registerEvents();
-    this.eventBus.emit(Component.EVENTS.INIT);
+    this.eventBus.emit(this.EVENTS.INIT);
   }
 
-  _registerEvents() {
-    this.eventBus.on(Component.EVENTS.INIT, this.init.bind(this));
-    this.eventBus.on(Component.EVENTS.FLOW_CDM, this._componentDidMount.bind(this));
-    this.eventBus.on(Component.EVENTS.FLOW_CDU, this._componentDidUpdate.bind(this));
-    this.eventBus.on(Component.EVENTS.FLOW_RENDER, this._render.bind(this));
+  _registerEvents(): void {
+    this.eventBus.on(this.EVENTS.INIT, this._init.bind(this));
+    this.eventBus.on(this.EVENTS.FLOW_CDM, this._componentDidMount.bind(this));
+    this.eventBus.on(this.EVENTS.FLOW_CDU, this._componentDidUpdate.bind(this));
+    this.eventBus.on(this.EVENTS.FLOW_RENDER, this._render.bind(this));
   }
 
-  _addEvents() {
+  _addEvents(): void {
     const {events = {}} = this.props;
+    const el = document.querySelector(`[_key=${this._id}]`);
+    if (!el) {
+      return;
+    }
     Object.keys(events).forEach((eventName) => {
-      this._element!.addEventListener(eventName, events[eventName]);
+      console.log(eventName)
+      el.addEventListener(eventName, events[eventName]);
+      // el.addEventListener(eventName, events[eventName]);
     });
   }
 
-  _removeEvents() {
+  _removeEvents(): void {
     const {events = {}} = this.props;
-
+    const el = document.querySelector(`[_key=${this._id}]`);
+    if (!el) {
+      return;
+    }
     Object.keys(events).forEach((eventName) => {
-      this._element!.removeEventListener(eventName, events[eventName]);
+      el!.removeEventListener(eventName, events[eventName]);
     });
   }
 
-  _createResources() {
+  _createResources(): void {
     const {tagName, className} = this._meta;
     this._element = this._createDocumentElement(tagName, className);
   }
 
-  init() {
+  _init(): void {
     this._createResources();
-    this.eventBus.emit(Component.EVENTS.FLOW_CDM);
+    this.eventBus.emit(this.EVENTS.FLOW_CDM);
   }
 
-  _componentDidMount() {
+  _componentDidMount(): void {
     this.componentDidMount();
-    this.eventBus.emit(Component.EVENTS.FLOW_RENDER);
+    this.eventBus.emit(this.EVENTS.FLOW_RENDER);
   }
 
   // Может переопределять пользователь, необязательно трогать
-  componentDidMount() {}
+  componentDidMount(): void {}
 
-  _componentDidUpdate(oldProps: Props, newProps: Props) {
+  _componentDidUpdate(oldProps: Props, newProps: Props): void {
     const response = this.componentDidUpdate(oldProps, newProps);
     if (response) {
       // console.log('emit render after update')
-      this.eventBus.emit(Component.EVENTS.FLOW_RENDER);
+      this.eventBus.emit(this.EVENTS.FLOW_RENDER);
     }
   }
 
   // Может переопределять пользователь, необязательно трогать
-  componentDidUpdate(oldProps: Props, newProps: Props) {
+  componentDidUpdate(oldProps: ProxyHandler<Props>, newProps: ProxyHandler<Props>): boolean {
     return true;
   }
 
-  setProps = (nextProps: Props) => {
+  setProps = (nextProps: Props): ProxyHandler<Props> | void => {
     if (!nextProps) {
       return;
     }
@@ -106,43 +117,58 @@ export class Component {
     const oldProps = this.props;
 
     this.props = Object.assign(this.props, nextProps);
-    this.eventBus.emit(Component.EVENTS.FLOW_CDU, oldProps, this.props);
+    this.eventBus.emit(this.EVENTS.FLOW_CDU, oldProps, this.props);
   };
 
-  get element() {
+  get id(): string {
+    return this._id;
+  }
+
+  get element(): HTMLElement {
     return this._element;
   }
 
-  _render() {
+  _render(): void {
     // console.log('render')
     const htmlString = this.render().trim();
     // const parsedHTML = this.DOMParser.parseFromString(htmlString, 'text/html');
     // const oldContent = this._element.firstChild;
     // const newContent = parsedHTML.body.firstChild;
     this._removeEvents();
-    console.log('oldElement', this._element)
+    console.log('oldElement', this._element);
     // if (oldContent) oldContent.replaceWith(newContent);
     // this._element.appendChild(newContent);
     this._element.innerHTML = htmlString;
     this._addEvents();
     console.log('newElement', this._element);
-    return this._element;
   }
 
   // Может переопределять пользователь, необязательно трогать
-  render() {}
+  render(): string {
+    return '';
+  }
 
-  getContent() {
+  getContent(): HTMLElement {
     return this._element;
   }
 
-  _makePropsProxy(props: Props) {
-    const that = this;
+  _makePropsProxy(props: Props): ProxyHandler<Props> {
+    // const that = this;
     const proxyProps = new Proxy(props, {
+      get(target, prop) {
+        const value = target[prop];
+        return typeof value === 'function' ? value.bind(target) : value;
+      },
       set(target, prop, value) {
-        target[prop] = value;
-        that.eventBus.emit(Component.EVENTS.FLOW_RENDER);
-        return true;
+        // const oldProps = that.props;
+        if (target[prop] !== value) {
+          console.log(target[prop])
+          target[prop] = value;
+          console.log(target[prop])
+          // that.eventBus.emit(that.EVENTS.FLOW_CDU, oldProps, target);
+          return true;
+        }
+        return false;
       },
       deleteProperty(target, prop) { // перехватываем удаление свойства
         throw new Error('нет доступа');
@@ -151,12 +177,13 @@ export class Component {
     return proxyProps;
   }
 
-  _createDocumentElement(tagName: string, className?: string) {
+  _createDocumentElement(tagName: string, className?: string): HTMLElement {
     // Можно сделать метод, который через фрагменты в цикле создаёт сразу несколько блоков
     const element = document.createElement(tagName);
     if (className) {
       element.classList.add(className);
     }
+    element.setAttribute('data-id', this._id);
     return element;
   }
 
