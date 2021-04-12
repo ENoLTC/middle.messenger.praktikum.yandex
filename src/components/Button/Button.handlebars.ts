@@ -6,4 +6,4 @@ export const buttonTemplate = `
     class="button{{#each classes}} {{this}}{{/each}}">
     {{buttonText}}
   </button>
-`
+`;

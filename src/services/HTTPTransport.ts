@@ -3,7 +3,7 @@ enum METHODS {
   PUT = 'PUT',
   POST = 'POST',
   DELETE = 'DELETE',
-};
+}
 
 interface Options {
   method: METHODS;
@@ -17,39 +17,36 @@ interface Options {
  * На входе: объект. Пример: {a: 1, b: 2, c: {d: 123}, k: [1, 2, 3]}
  * На выходе: строка. Пример: ?a=1&b=2&c=[object Object]&k=1,2,3
  */
-function queryStringify(data: {[key: string]: any}) {
-  // Можно делать трансформацию GET-параметров в отдельной функции
-  let queryString = '';
-  for (const [key, value] of Object.entries(data)) {
-    const symb = queryString.length ? '&' : '?';
-    queryString = `${queryString}${symb}${key}=${value}`
-  }
-  return queryString
-}
 
 export class HTTPTransport {
+  queryStringify(data: {[key: string]: any}) {
+    // Можно делать трансформацию GET-параметров в отдельной функции
+    let queryString = '';
+    for (const [key, value] of Object.entries(data)) {
+      const symb = queryString.length ? '&' : '?';
+      queryString = `${queryString}${symb}${key}=${value}`;
+    }
+    return queryString;
+  }
+
   get = (url: string, options: Options = {} as Options) => {
     const {data} = options;
     if (data) {
-      url = `${url}${queryStringify(data)}`
+      url = `${url}${this.queryStringify(data)}`;
     }
     return this.request(url, {...options, method: METHODS.GET});
   };
 
-  put = (url: string, options: Options = {} as Options) => {
-    return this.request(url, {...options, method: METHODS.PUT});
-  };
+  put = (url: string, options: Options = {} as Options) => this.request(url, {...options, method: METHODS.PUT});
 
-  post = (url: string, options: Options = {} as Options) => {
-    return this.request(url, {...options, method: METHODS.POST});
-  };
+  post = (url: string, options: Options = {} as Options) => this.request(url, {...options, method: METHODS.POST});
 
-  delete = (url: string, options: Options = {} as Options) => {
-    return this.request(url, {...options, method: METHODS.DELETE});
-  };
+  delete = (url: string, options: Options = {} as Options) => this.request(url, {...options, method: METHODS.DELETE});
 
   request = (url: string, options: Options) => {
-    const {method, data, headers, timeout = 5000} = options;
+    const {
+      method, data, headers, timeout = 5000,
+    } = options;
     return new Promise((resolve, reject) => {
       const xhr = new XMLHttpRequest();
       xhr.open(method, url);
@@ -62,21 +59,12 @@ export class HTTPTransport {
         }
       }
 
-      xhr.onload = function() {
+      xhr.onload = () => {
         resolve(xhr);
-      }
-      xhr.onabort = function() {
-        throw new Error('Request aborted');
-        reject();
-      }
-      xhr.onerror = function() {
-        throw new Error('Request error');
-        reject();
-      }
-      xhr.onloadend = function() {
-        throw new Error('Request completed');
-        reject();
-      }
+      };
+      xhr.onabort = reject;
+      xhr.onerror = reject;
+      xhr.onloadend = reject;
 
       if (method === METHODS.GET || !data) {
         xhr.send();

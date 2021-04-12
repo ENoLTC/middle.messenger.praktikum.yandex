@@ -1,4 +1,4 @@
-import {FormValidator} from "./FormValidator";
+import {FormValidator} from './FormValidator';
 
 interface Config {
   inputSelector: string;

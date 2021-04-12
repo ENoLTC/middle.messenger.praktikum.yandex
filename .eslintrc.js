@@ -23,6 +23,7 @@ module.exports = {
     'object-curly-spacing': 'off',
     'no-underscore-dangle': 'off',
     'class-methods-use-this': 'off',
+    'no-restricted-syntax': 'off',
     'import/extensions': [
       'error',
       'ignorePackages',
