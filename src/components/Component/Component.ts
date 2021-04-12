@@ -1,5 +1,5 @@
-import {EventBus} from '../../services';
 import {v4 as uuidv4} from 'uuid';
+import {EventBus} from '../../services';
 
 export interface AnyObject {
   [key: string]: any;
@@ -30,8 +30,8 @@ export class Component {
    * @returns {void}
    */
   constructor(
-    props: AnyObject = {}
-    ) {
+    props: AnyObject = {},
+  ) {
     this.eventBus = new EventBus();
     this._meta = {props};
 
@@ -59,29 +59,29 @@ export class Component {
     // Object.keys(events).forEach((eventName) => {
     //   el.addEventListener(eventName, events[eventName]);
     // });
-    if (this.props.childNodes) {
-      for (const [_, node] of Object.entries(this.props.childNodes)) {
-        if (node.props.events) {
-          Object.keys(node.props.events).forEach((eventName) => {
-            let element = document.querySelector(`[data-id="${node.props.__id}"]`);
-            console.log('el', element)
-            if (element) element!.addEventListener(eventName, node.props.events[eventName]);
-          });
-        }
-      }
-    }
+    // if (this.props.childNodes) {
+    //   for (const [_, node] of Object.entries(this.props.childNodes)) {
+    //     if (node.props.events) {
+    //       Object.keys(node.props.events).forEach((eventName) => {
+    //         const element = document.querySelector(`[data-id="${node.props.__id}"]`);
+    //         console.log('el', element);
+    //         if (element) element!.addEventListener(eventName, node.props.events[eventName]);
+    //       });
+    //     }
+    //   }
+    // }
   }
 
   _removeEventListeners(): void {
     const {events = {}} = this.props;
-    const el = document.querySelector(`[data-id="${this._id}"]`);
-    console.log('removeEvents', el)
-    if (!el) {
-      return;
-    }
-    Object.keys(events).forEach((eventName) => {
-      el!.removeEventListener(eventName, events[eventName]);
-    });
+    // const el = document.querySelector(`[data-id="${this._id}"]`);
+    // console.log('removeEvents', el);
+    // if (!el) {
+    //   return;
+    // }
+    // Object.keys(events).forEach((eventName) => {
+    //   el!.removeEventListener(eventName, events[eventName]);
+    // });
   }
 
   _createResources(): void {
@@ -136,7 +136,7 @@ export class Component {
     const htmlString = this.render().trim();
     this._element.innerHTML = htmlString;
 
-    let renderedElement = document.querySelector(`[data-id="${this._id}"]`);
+    const renderedElement = document.querySelector(`[data-id="${this._id}"]`);
     if (renderedElement) {
       this._removeEventListeners();
       renderedElement.replaceWith(this._element);

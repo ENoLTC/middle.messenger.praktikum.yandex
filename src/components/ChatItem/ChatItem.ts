@@ -5,7 +5,7 @@ import {Component} from '../Component';
 
 export class ChatItem extends Component {
   constructor(props) {
-    super('div', undefined, props);
+    super(props);
   }
 
   render(): string {

@@ -2,7 +2,7 @@ import pinSVG from '../../../../../static/assets/icons/pin.svg';
 import sendSVG from '../../../../../static/assets/icons/arrow-right.svg';
 
 export const selectedUserChatFooterTemplate = `
-  <footer class="chat__footer">
+  <footer class="chat__footer" data-id="{{__id}}">
     <button class="chat__footer__button-pin">
       <img class="chat__footer__button-pin__icon" src=${pinSVG} />
     </button>

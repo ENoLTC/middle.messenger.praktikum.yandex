@@ -1,7 +1,9 @@
 import searchSVG from '../../../static/assets/icons/search.svg';
 
 export const searchBarTemplate = `
-  <div class="search-bar{{#each this.classes.container}} {{this}}{{/each}}">
+  <div
+    data-id="{{__id}}"
+    class="search-bar{{#each this.classes.container}} {{this}}{{/each}}">
     <input
       type={{this.type}}
       name={{this.name}}

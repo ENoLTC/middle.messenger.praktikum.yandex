@@ -5,7 +5,7 @@ import {Component} from '../Component';
 
 export class SearchBar extends Component {
   constructor(props) {
-    super('div', undefined, props);
+    super(props);
   }
 
   componentDidMount() {

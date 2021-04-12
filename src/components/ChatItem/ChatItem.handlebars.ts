@@ -1,5 +1,8 @@
 export const chatItemTemplate = `
-  <li class="chat-item{{#if isChatSelected}} chat-item_selected{{/if}}" id={{userId}}>
+  <li
+    data-id="{{__id}}"
+    class="chat-item{{#if isChatSelected}} chat-item_selected{{/if}}"
+    id={{userId}}>
     <div class="chat-item__avatar">
       <img src="" />
     </div>
@@ -16,4 +19,4 @@ export const chatItemTemplate = `
     </div>
     </div>
   </li>
-`
+`;

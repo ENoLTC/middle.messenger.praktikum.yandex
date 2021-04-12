@@ -1,5 +1,5 @@
 export const selectedUserChatContentTemplate = `
-  <section class="chat__messages">
+  <section class="chat__messages" data-id="{{__id}}">
     {{#each this.chat}}
       <h5 class="chat__message-date">{{dateSent}}</h5>
       <article

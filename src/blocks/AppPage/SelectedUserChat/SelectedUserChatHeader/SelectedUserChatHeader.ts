@@ -5,7 +5,7 @@ import {Component} from '../../../../components/Component';
 
 export class SelectedUserChatHeader extends Component {
   constructor(props: any) {
-    super('header', 'chat-header', props);
+    super(props);
   }
 
   componentDidMount() {

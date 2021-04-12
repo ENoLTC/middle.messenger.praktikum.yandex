@@ -6,10 +6,35 @@ import {Component} from '../../components/Component';
 import {Main} from '../Main';
 import {Screens} from '../Main/Main.context';
 import {render} from '../../utils/renderDOM';
+import {ChatMenu} from '../ChatMenu';
+import {Profile} from '../Profile';
+import {Button} from '../../components/Button';
+import {ProfileEditInput} from '../../components/ProfileEditInput';
 
 export class ProfileEditPage extends Component {
   constructor(props: any) {
-    super('section', 'login', props);
+    super({
+      ...props,
+      childNodes: {
+        profile: new Profile({
+          isEditing: false,
+          inputs: {
+            email: new ProfileEditInput(props.profile.inputs.email),
+            login: new ProfileEditInput(props.profile.inputs.login),
+            first_name: new ProfileEditInput(props.profile.inputs.first_name),
+            second_name: new ProfileEditInput(props.profile.inputs.second_name),
+            display_name: new ProfileEditInput(props.profile.inputs.display_name),
+            phone: new ProfileEditInput(props.profile.inputs.phone),
+          },
+          buttons: {
+            submit: new Button(props.profile.buttons.submit),
+            signIn: new Button(props.profile.buttons.signIn),
+            logout: new Button(props.profile.buttons.logout),
+          },
+        }),
+        chatMenu: new ChatMenu(props.chatMenu),
+      },
+    });
   }
 
   componentDidMount() {
@@ -22,12 +47,13 @@ export class ProfileEditPage extends Component {
 
   render(): string {
     const template = Handlebars.compile(profileEditTemplate);
-    const renderedTemplate = template({
+    return template({
       ...this.props,
-      chatMenu: this.props.chatMenu.render(),
-      profile: this.props.profile.render(),
+      childNodes: {
+        chatMenu: this.props.childNodes.chatMenu.render(),
+        profile: this.props.childNodes.profile.render(),
+      },
     });
-    return renderedTemplate;
   }
 }
 

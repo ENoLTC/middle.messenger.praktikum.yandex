@@ -5,7 +5,7 @@ import {Component} from '../../../components/Component';
 
 export class ChatEmpty extends Component {
   constructor(props: any) {
-    super('p', undefined, props);
+    super(props);
   }
 
   componentDidMount() {

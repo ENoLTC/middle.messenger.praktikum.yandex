@@ -2,10 +2,11 @@ import Handlebars from 'handlebars';
 import {profileTemplate} from './Profile.handlebars';
 import './Profile.scss';
 import {Component} from '../../components/Component';
+import {AnyObject} from '../../components/Component/Component';
 
 export class Profile extends Component {
-  constructor(props: any) {
-    super('section', 'login', props);
+  constructor(props: AnyObject) {
+    super(props);
   }
 
   componentDidMount() {

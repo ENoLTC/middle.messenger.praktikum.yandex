@@ -1,13 +1,8 @@
-import {Button} from '../../components/Button';
-import {ProfileEditInput} from '../../components/ProfileEditInput';
-import {Profile} from '../Profile';
-import {ChatMenu} from '../ChatMenu';
-
 export const context = {
-  profile: new Profile({
+  profile: {
     isEditing: false,
     inputs: {
-      email: new ProfileEditInput({
+      email: {
         type: 'email',
         name: 'email',
         labelName: 'Почта',
@@ -19,8 +14,8 @@ export const context = {
           input: [],
           label: [],
         },
-      }),
-      login: new ProfileEditInput({
+      },
+      login: {
         type: 'text',
         name: 'login',
         labelName: 'Логин',
@@ -32,8 +27,8 @@ export const context = {
           input: [],
           label: [],
         },
-      }),
-      first_name: new ProfileEditInput({
+      },
+      first_name: {
         type: 'text',
         name: 'first_name',
         labelName: 'Имя',
@@ -45,8 +40,8 @@ export const context = {
           input: [],
           label: [],
         },
-      }),
-      second_name: new ProfileEditInput({
+      },
+      second_name: {
         type: 'text',
         name: 'second_name',
         labelName: 'Фамилия',
@@ -58,8 +53,8 @@ export const context = {
           input: [],
           label: [],
         },
-      }),
-      display_name: new ProfileEditInput({
+      },
+      display_name: {
         type: 'text',
         name: 'display_name',
         labelName: 'Имя в чате',
@@ -71,8 +66,8 @@ export const context = {
           input: [],
           label: [],
         },
-      }),
-      phone: new ProfileEditInput({
+      },
+      phone: {
         type: 'phone',
         name: 'phone',
         labelName: 'Телефон',
@@ -84,30 +79,30 @@ export const context = {
           input: [],
           label: [],
         },
-      }),
+      },
     },
     buttons: {
-      submit: new Button({
+      submit: {
         type: 'button',
         name: 'profile_change',
         buttonText: 'Изменить данные',
         classes: ['button_text-like', 'button_profile-change', 'button_text-blue'],
-      }),
-      signIn: new Button({
+      },
+      signIn: {
         type: 'button',
         name: 'password_change',
         buttonText: 'Изменить пароль',
         classes: ['button_text-like', 'button_profile-change', 'button_text-blue'],
-      }),
-      logout: new Button({
+      },
+      logout: {
         type: 'button',
         name: 'logout',
         buttonText: 'Выйти',
         classes: ['button_text-like', 'button_profile-change', 'button_text-red'],
-      }),
+      },
     },
-  }),
-  chatMenu: new ChatMenu({
+  },
+  chatMenu: {
     profileInfoOpened: true,
-  }),
+  },
 };

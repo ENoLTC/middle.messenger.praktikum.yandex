@@ -2,7 +2,9 @@ import arrowLeftSVG from '../../../static/assets/icons/arrow-left.svg';
 import chevronRight from '../../../static/assets/icons/chevron-right.svg';
 
 export const chatMenuTemplate = `
-  <section class="chats-menu {{#if profileInfoOpened}}chats-menu-hidden{{/if}}">
+  <section
+    data-id="{{__id}}"
+    class="chats-menu {{#if profileInfoOpened}}chats-menu-hidden{{/if}}">
     {{#if profileInfoOpened}}
     <a href="/main.html" class="screen-href">
       <button type="button" class="button button_stop-editing">

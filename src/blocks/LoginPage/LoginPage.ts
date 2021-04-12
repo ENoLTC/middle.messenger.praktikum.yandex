@@ -7,27 +7,32 @@ import {context as LoginContext} from './LoginPage.context';
 import {render} from '../../utils/renderDOM';
 import {Input} from '../../components/Input';
 import {Button} from '../../components/Button';
-import {AnyObject} from "../../components/Component/Component";
+import {AnyObject} from '../../components/Component/Component';
+import {Screens} from '../Main/Main.context';
+import {Main} from '../Main';
 
 export class LoginPage extends Component {
   constructor(props: AnyObject) {
     super({
       ...props,
       childNodes: {
-        loginInput: new Input({...props.inputs.login, events: {
+        loginInput: new Input({
+          ...props.inputs.login,
+          events: {
             click: [(e: InputEvent) => {
               e.preventDefault();
-              console.log(e)
-            }]
-          },}),
+              console.log(e);
+            }],
+          },
+        }),
         passwordInput: new Input({...props.inputs.password}),
         submitButton: new Button({
           ...props.buttons.submit,
           events: {
             click: [(e) => {
               e.preventDefault();
-              console.log('123')
-            }]
+              console.log('123');
+            }],
           },
         }),
         signInButton: new Button({
@@ -35,14 +40,14 @@ export class LoginPage extends Component {
           events: {
             click: [(e) => {
               e.preventDefault();
-              console.log('123')
-            }]
+              console.log('123');
+            }],
           },
         }),
       },
       events: {
-        click: [() => console.log('123')]
-      }
+        click: [() => console.log('123')],
+      },
     });
   }
 
@@ -53,8 +58,8 @@ export class LoginPage extends Component {
       },
     });
     setTimeout(() => {
-      this.setProps({tit: 'FDGFHRSHR'})
-      this.props.childNodes.loginInput.setProps({labelName: 'LOOOOOOOOOOOOOX'})
+      this.setProps({tit: 'FDGFHRSHR'});
+      this.props.childNodes.loginInput.setProps({labelName: 'LOOOOOOOOOOOOOX'});
     }, 3000);
   }
 
@@ -70,39 +75,13 @@ export class LoginPage extends Component {
   }
 }
 
-class Main extends Component {
-  constructor() {
-    super({
-      childNodes: {
-        loginPage: new LoginPage(LoginContext)
-      },
-    });
-  }
-
-  componentDidMount() {
-    Handlebars.registerHelper({
-      log(something) {
-        console.log(something);
-      },
-    });
-  }
-
-  componentDidUpdate(oldProps: ProxyHandler<AnyObject>, newProps: ProxyHandler<AnyObject>) {
-    return true;
-  }
-
-  render(): string {
-    const template = Handlebars.compile(`<main class="main" data-id={{__id}}>{{{loginPage}}}</main>`);
-    return template({
-      ...this.props,
-      loginPage: this.props.childNodes.loginPage.render(),
-    });
-  }
-}
-
-const main = new Main();
+const main = new Main({
+  activeScreen: Screens.LOGIN,
+  screens: {
+    [Screens.LOGIN]: new LoginPage(LoginContext),
+  },
+});
 render('body', main);
-
 
 // const initForm = () => {
 //   const loginForm: HTMLFormElement | null = document.querySelector('.login__form');

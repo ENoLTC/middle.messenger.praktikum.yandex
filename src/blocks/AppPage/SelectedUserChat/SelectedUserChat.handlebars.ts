@@ -1,5 +1,5 @@
 export const selectedUserChatTemplate = `
-  <section class="chat">
+  <section class="chat" data-id="{{__id}}">
     {{{compiledSelectedUserChatHeader}}}
     {{{compiledSelectedUserChatContent}}}
     {{{compiledSelectedUserChatFooter}}}

@@ -1,3 +1,3 @@
 export const mainTemplate = `
-  {{log this}}
+  <main class="main" data-id={{__id}}>{{{renderedPage}}}</main>
 `;

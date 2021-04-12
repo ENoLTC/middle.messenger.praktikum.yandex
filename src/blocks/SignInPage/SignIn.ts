@@ -2,14 +2,34 @@ import Handlebars from 'handlebars';
 import {signInTemplate} from './SignIn.handlebars';
 import './SignIn.scss';
 import {Component} from '../../components/Component';
-import {Main} from "../Main";
-import {Screens} from "../Main/Main.context";
-import {context as SignInContext} from "./SignIn.context";
-import {render} from "../../utils/renderDOM";
+import {Main} from '../Main';
+import {Screens} from '../Main/Main.context';
+import {context as SignInContext} from './SignIn.context';
+import {render} from '../../utils/renderDOM';
+import {AnyObject} from '../../components/Component/Component';
+import {Input} from '../../components/Input';
+import {Button} from '../../components/Button';
 
 export class SignInPage extends Component {
-  constructor(props: any) {
-    super('section', 'signin', props);
+  constructor(props: AnyObject) {
+    super({
+      ...props,
+      childNodes: {
+        inputs: {
+          emailInput: new Input({...props.inputs.email}),
+          loginInput: new Input({...props.inputs.login}),
+          nameInput: new Input({...props.inputs.name}),
+          surnameInput: new Input({...props.inputs.surname}),
+          phoneInput: new Input({...props.inputs.phone}),
+          passwordInput: new Input({...props.inputs.password}),
+          passwordConfirmInput: new Input({...props.inputs.password_confirm}),
+        },
+        buttons: {
+          submitButton: new Button({...props.buttons.submit}),
+          loginButton: new Button({...props.buttons.login}),
+        },
+      },
+    });
   }
 
   componentDidMount() {
@@ -22,25 +42,27 @@ export class SignInPage extends Component {
 
   render(): string {
     const template = Handlebars.compile(signInTemplate);
-    const renderedTemplate = template({
+    return template({
       ...this.props,
-      compiled: {
+      childNodes: {
         inputs: {
-          emailInput: this.props.inputs.email.render(),
-          loginInput: this.props.inputs.login.render(),
-          nameInput: this.props.inputs.name.render(),
-          surnameInput: this.props.inputs.surname.render(),
-          phoneInput: this.props.inputs.phone.render(),
-          passwordInput: this.props.inputs.password.render(),
-          passwordConfirmInput: this.props.inputs.password_confirm.render(),
+          emailInput: this.props.childNodes.inputs.emailInput.render(),
+          loginInput: this.props.childNodes.inputs.loginInput.render(),
+          nameInput: this.props.childNodes.inputs.nameInput.render(),
+          surnameInput: this.props.childNodes.inputs.surnameInput.render(),
+          phoneInput: this.props.childNodes.inputs.phoneInput.render(),
+          passwordInput: this.props.childNodes.inputs.passwordInput.render(),
+          passwordConfirmInput: this.props.childNodes.inputs.passwordConfirmInput.render(),
         },
         buttons: {
-          submitButton: this.props.buttons.submit.render(),
-          loginButton: this.props.buttons.login.render(),
+          submitButton: this.props.childNodes.buttons.submitButton.render(),
+          loginButton: this.props.childNodes.buttons.loginButton.render(),
         },
       },
+      events: {
+        click: [() => console.log('123')],
+      },
     });
-    return renderedTemplate;
   }
 }
 
@@ -51,14 +73,3 @@ const main = new Main({
   },
 });
 render('body', main);
-// const signInForm = document.querySelector('.signin__form');
-// signInForm.addEventListener('submit', (e) => {
-//   e.preventDefault();
-//   const formData = new FormData(e.target);
-//   const formValues = {};
-//   for(let [name, value] of formData) {
-//     formValues[name] = value;
-//   }
-//   console.log(formValues);
-//   window.location = '/main.html';
-// });

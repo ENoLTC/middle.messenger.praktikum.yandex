@@ -1,13 +1,3 @@
-import {ChatMenu} from '../ChatMenu';
-import {ChatEmpty} from './ChatEmpty';
-import {SelectedUserChat} from './SelectedUserChat';
-import {SearchBar} from '../../components/SearchBar';
-import {SelectedUserChatHeader} from './SelectedUserChat/SelectedUserChatHeader';
-import {SelectedUserChatContent} from './SelectedUserChat/SelectedUserChatContent';
-import {SelectedUserChatFooter} from './SelectedUserChat/SelectedUserChatFooter';
-import {ChatItem} from "../../components/ChatItem";
-import {Badge} from "../../components/Badge";
-
 export enum ChatActiveScreens {
   EMPTY = 'chat_empty',
   SELECTED_USER_CHAT = 'selected_user_chat',
@@ -17,20 +7,20 @@ export const context = {
   activeScreen: ChatActiveScreens.EMPTY,
   activeChatId: '',
   selectedChat: [],
-  chatEmpty: new ChatEmpty({}),
-  selectedUserChat: new SelectedUserChat({
-    selectedUserChatHeader: new SelectedUserChatHeader({
+  chatEmpty: {},
+  selectedUserChat: {
+    selectedUserChatHeader: {
       name: '',
-    }),
-    selectedUserChatContent: new SelectedUserChatContent({
+    },
+    selectedUserChatContent: {
       chat: [],
-    }),
-    selectedUserChatFooter: new SelectedUserChatFooter({}),
-  }),
-  chatMenu: new ChatMenu({
+    },
+    selectedUserChatFooter: {},
+  },
+  chatMenu: {
     profileInfoOpened: false,
     chats: [
-      new ChatItem({
+      {
         name: 'Andrey',
         userId: 1,
         lastMessage: 'Cool!',
@@ -57,12 +47,12 @@ export const context = {
             content: 'Cool!',
           },
         ],
-        badge: new Badge({newMessages: 1}),
+        badge: {newMessages: 1},
         events: {
           click: [() => console.log('123')],
         },
-      }),
-      new ChatItem({
+      },
+      {
         name: 'Antony',
         userId: 2,
         lastMessage: 'Hello!',
@@ -107,9 +97,9 @@ export const context = {
             content: 'Hello!',
           },
         ],
-        badge: new Badge({newMessages: 4}),
-      }),
-      new ChatItem({
+        badge: {newMessages: 4},
+      },
+      {
         name: '1, 2, 3',
         userId: 3,
         lastMessage: 'You: Lets go!',
@@ -136,9 +126,9 @@ export const context = {
             content: 'Lets go!',
           },
         ],
-        badge: new Badge({newMessages: null}),
-      }),
-      new ChatItem({
+        badge: {newMessages: null},
+      },
+      {
         name: 'Club',
         userId: 4,
         lastMessage: 'Cool!',
@@ -146,9 +136,9 @@ export const context = {
         newMessages: null,
         isChatSelected: false,
         chat: [],
-        badge: new Badge({newMessages: null}),
-      }),
-      new ChatItem({
+        badge: {newMessages: null},
+      },
+      {
         name: 'Stas',
         userId: 5,
         lastMessage: 'lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem',
@@ -169,10 +159,10 @@ export const context = {
             content: 'lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem',
           },
         ],
-        badge: new Badge({newMessages: null}),
-      }),
+        badge: {newMessages: null},
+      },
     ],
-    searchBar: new SearchBar({
+    searchBar: {
       type: 'text',
       name: 'chat_search',
       placeholder: 'Поиск',
@@ -180,6 +170,6 @@ export const context = {
         container: [],
         searchBar: [],
       },
-    }),
-  }),
+    },
+  },
 };

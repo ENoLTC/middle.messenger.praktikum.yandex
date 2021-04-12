@@ -1,9 +1,6 @@
-import {Input} from '../../components/Input';
-import {Button} from '../../components/Button';
-
 export const context = {
   inputs: {
-    email: new Input({
+    email: {
       type: 'email',
       name: 'email',
       labelName: 'Почта',
@@ -15,8 +12,8 @@ export const context = {
         input: [],
         label: [],
       },
-    }),
-    login: new Input({
+    },
+    login: {
       type: 'text',
       name: 'login',
       labelName: 'Логин',
@@ -28,8 +25,8 @@ export const context = {
         input: [],
         label: [],
       },
-    }),
-    name: new Input({
+    },
+    name: {
       type: 'text',
       name: 'first_name',
       labelName: 'Имя',
@@ -41,8 +38,8 @@ export const context = {
         input: [],
         label: [],
       },
-    }),
-    surname: new Input({
+    },
+    surname: {
       type: 'text',
       name: 'second_name',
       labelName: 'Фамилия',
@@ -54,8 +51,8 @@ export const context = {
         input: [],
         label: [],
       },
-    }),
-    phone: new Input({
+    },
+    phone: {
       type: 'phone',
       name: 'phone',
       labelName: 'Телефон',
@@ -67,8 +64,8 @@ export const context = {
         input: [],
         label: [],
       },
-    }),
-    password: new Input({
+    },
+    password: {
       type: 'password',
       name: 'password',
       labelName: 'Пароль',
@@ -80,8 +77,8 @@ export const context = {
         input: [],
         label: [],
       },
-    }),
-    password_confirm: new Input({
+    },
+    password_confirm: {
       type: 'password',
       name: 'password_confirm',
       labelName: 'Пароль (ещё раз)',
@@ -93,23 +90,23 @@ export const context = {
         input: [],
         label: [],
       },
-    }),
+    },
   },
   buttons: {
-    submit: new Button({
+    submit: {
       type: 'submit',
       name: 'signin_button',
       buttonText: 'Зарегистрироваться',
       classes: ['button_primary'],
-    }),
-    login: new Button({
+    },
+    login: {
       type: 'button',
       name: 'signin_form',
       buttonText: 'Войти',
       classes: ['button_text-like'],
       events: {
         click: [() => console.log('123')],
-      }
-    }),
+      },
+    },
   },
 };

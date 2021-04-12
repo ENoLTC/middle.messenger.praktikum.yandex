@@ -6,10 +6,26 @@ import {Component} from '../../components/Component';
 import {Main} from '../Main';
 import {Screens} from '../Main/Main.context';
 import {render} from '../../utils/renderDOM';
+import {ChatEmpty} from './ChatEmpty';
+import {SelectedUserChat} from './SelectedUserChat';
+import {SelectedUserChatHeader} from './SelectedUserChat/SelectedUserChatHeader';
+import {SelectedUserChatContent} from './SelectedUserChat/SelectedUserChatContent';
+import {SelectedUserChatFooter} from './SelectedUserChat/SelectedUserChatFooter';
+import {ChatMenu} from '../ChatMenu';
+import {ChatItem} from '../../components/ChatItem';
+import {Badge} from '../../components/Badge';
+import {SearchBar} from '../../components/SearchBar';
 
 export class App extends Component {
   constructor(props: any) {
-    super('section', 'login', props);
+    super({
+      ...props,
+      childNodes: {
+        chatEmpty: new ChatEmpty(props.chatEmpty),
+        selectedUserChat: new SelectedUserChat(props.selectedUserChat),
+        chatMenu: new ChatMenu(props.chatMenu),
+      },
+    });
   }
 
   componentDidMount() {
@@ -23,11 +39,11 @@ export class App extends Component {
   decideChatContent() {
     switch (this.props.activeScreen) {
       case ChatActiveScreens.EMPTY:
-        return this.props.chatEmpty.render();
+        return this.props.childNodes.chatEmpty.render();
       case ChatActiveScreens.SELECTED_USER_CHAT:
-        return this.props.selectedUserChat.render();
+        return this.props.childNodes.selectedUserChat.render();
       default:
-        return this.props.chatEmpty.render();
+        return this.props.childNodes.chatEmpty.render();
     }
   }
 
@@ -35,7 +51,7 @@ export class App extends Component {
     const template = Handlebars.compile(appTemplate);
     return template({
       ...this.props,
-      chatMenu: this.props.chatMenu.render(),
+      chatMenu: this.props.childNodes.chatMenu.render(),
       chatContent: this.decideChatContent(),
     });
   }

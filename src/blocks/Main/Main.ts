@@ -1,10 +1,11 @@
 import Handlebars from 'handlebars';
 import './Main.scss';
 import {Component} from '../../components/Component';
+import {mainTemplate} from './Main.handlebars';
 
 export class Main extends Component {
   constructor(props) {
-    super('main', 'main', props);
+    super(props);
   }
 
   componentDidMount() {
@@ -16,11 +17,13 @@ export class Main extends Component {
   }
 
   render(): string {
-    const activeScreen = this.props.screens[this.props.activeScreen].render();
-    return activeScreen;
+    const template = Handlebars.compile(mainTemplate);
+    return template({
+      ...this.props,
+      renderedPage: this.props.screens[this.props.activeScreen].render(),
+    });
   }
 }
-
 
 // const initForm = () => {
 //   const loginForm: HTMLFormElement | null = document.querySelector('.login__form');

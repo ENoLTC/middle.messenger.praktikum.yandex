@@ -1,9 +1,10 @@
 export const serverErrorTemplate = `
-  <section class="server_error">
+   {{log this}}
+  <section class="server_error" data-id="{{__id}}">
     <p class="server_error__code">500</p>
     <p class="server_error__message">Мы уже фиксим</p>
     <a href="/main.html" class="screen-href">
-      {{this.buttons.backToChats}}
+      {{{childNodes.buttons.backToChatsButton}}}
     </a>
   </section>
-`
+`;

@@ -1,15 +1,55 @@
 import Handlebars from 'handlebars';
 import {serverErrorTemplate} from './ServerErrorPage.handlebars';
 import './ServerErrorPage.scss';
-import {compiledButton} from '../../components/Button/index';
-import {context} from './ServerErrorPage.context';
+import {context as ServerErrorContext} from './ServerErrorPage.context';
 
-const template = Handlebars.compile(serverErrorTemplate);
-Handlebars.registerPartial({
-  'button': compiledButton,
-})
+import {Component} from '../../components/Component';
+import {Main} from '../Main';
+import {Screens} from '../Main/Main.context';
+import {render} from '../../utils/renderDOM';
+import {AnyObject} from '../../components/Component/Component';
+import {Button} from '../../components/Button';
 
+export class ServerErrorPage extends Component {
+  constructor(props: AnyObject) {
+    super({
+      ...props,
+      childNodes: {
+        buttons: {
+          backToChatsButton: new Button({...props.buttons.backToChatsButton}),
+        },
+      },
+    });
+  }
 
-const main = document.querySelector('.main');
-export const compiledServerError = template(context);
-main.innerHTML = compiledServerError;
+  componentDidMount() {
+    Handlebars.registerHelper({
+      log(something) {
+        console.log(something);
+      },
+    });
+  }
+
+  render(): string {
+    const template = Handlebars.compile(serverErrorTemplate);
+    return template({
+      ...this.props,
+      childNodes: {
+        buttons: {
+          backToChatsButton: this.props.childNodes.buttons.backToChatsButton.render(),
+        },
+      },
+      events: {
+        click: [() => console.log('123')],
+      },
+    });
+  }
+}
+
+const main = new Main({
+  activeScreen: Screens.SERVER_ERROR,
+  screens: {
+    [Screens.SERVER_ERROR]: new ServerErrorPage(ServerErrorContext),
+  },
+});
+render('body', main);

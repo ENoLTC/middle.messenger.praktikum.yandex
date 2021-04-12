@@ -1,7 +1,7 @@
 import avatarSVG from '../../../static/assets/icons/picture.svg';
 
 export const profileTemplate = `
-  <section class="profile">
+  <section class="profile" data-id="{{__id}}">
     <div class="profile__avatar">
       <img class="profile__avatar-image" src=${avatarSVG} id="avatar" />
       <button class="profile__avatar-button" type="button">Поменять аватар</button>
