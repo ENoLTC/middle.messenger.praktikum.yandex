@@ -1,5 +1,7 @@
 export const inputTemplate = `
-  <div class="input-container{{#each classes.container}} {{this}}{{/each}}">
+  <div
+    data-id={{__id}}
+    class="input-container{{#each classes.container}} {{this}}{{/each}}">
     <input
       type={{type}}
       name={{name}}

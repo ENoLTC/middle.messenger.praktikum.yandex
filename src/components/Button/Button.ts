@@ -5,7 +5,7 @@ import {Component} from '../Component';
 
 export class Button extends Component {
   constructor(props) {
-    super('div', undefined, props);
+    super(props);
   }
 
   render(): string {

@@ -131,7 +131,7 @@ export class FormHandler {
     this.addSubmitEventListener();
   }
 
-  removeEventListeners() {
+  _removeEventListeners() {
     this.removeInputFocusLiseners();
     this.removeInputBlurLiseners();
     this.removeSubmitEventListener();

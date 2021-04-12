@@ -1,13 +1,12 @@
 import {EventBus} from '../../services';
+import {v4 as uuidv4} from 'uuid';
 
-interface Props {
+export interface AnyObject {
   [key: string]: any;
 }
 
 interface Meta {
-  tagName: string;
-  className?: string;
-  props: Props;
+  props: AnyObject;
 }
 
 export class Component {
@@ -21,9 +20,8 @@ export class Component {
   _element: HTMLElement = {} as HTMLElement;
   _meta: Meta;
   _id: string;
-  props: Props;
+  props: AnyObject;
   eventBus: EventBus;
-  DOMParser: DOMParser;
   /** JSDoc
    * @param {string} tagName
    * @param {string | undefined} className
@@ -31,17 +29,14 @@ export class Component {
    *
    * @returns {void}
    */
-  constructor(tagName = 'div', className: string | undefined = undefined, props: Props = {}) {
+  constructor(
+    props: AnyObject = {}
+    ) {
     this.eventBus = new EventBus();
-    this._meta = {
-      tagName,
-      className,
-      props,
-    };
+    this._meta = {props};
 
-    this._id = `uniq${parseInt(String(Math.random() * 1000000), 10)}`;
-    this.props = this._makePropsProxy({_key: this._id, ...props});
-    this.DOMParser = new DOMParser();
+    this._id = uuidv4();
+    this.props = this._makePropsProxy({__id: this._id, ...props});
 
     this._registerEvents();
     this.eventBus.emit(this.EVENTS.INIT);
@@ -50,26 +45,37 @@ export class Component {
   _registerEvents(): void {
     this.eventBus.on(this.EVENTS.INIT, this._init.bind(this));
     this.eventBus.on(this.EVENTS.FLOW_CDM, this._componentDidMount.bind(this));
-    this.eventBus.on(this.EVENTS.FLOW_CDU, this._componentDidUpdate.bind(this));
+    this.eventBus.on(this.EVENTS.FLOW_CDU, (oldProps: AnyObject = {}, newProps: AnyObject = {}) => this._componentDidUpdate(oldProps, newProps));
     this.eventBus.on(this.EVENTS.FLOW_RENDER, this._render.bind(this));
   }
 
-  _addEvents(): void {
+  _addEventListeners(): void {
     const {events = {}} = this.props;
-    const el = document.querySelector(`[_key=${this._id}]`);
-    if (!el) {
-      return;
+    // const el = document.querySelector(`[data-id="${this._id}"]`);
+    // console.log('addEvents', el)
+    // if (!el) {
+    //   return;
+    // }
+    // Object.keys(events).forEach((eventName) => {
+    //   el.addEventListener(eventName, events[eventName]);
+    // });
+    if (this.props.childNodes) {
+      for (const [_, node] of Object.entries(this.props.childNodes)) {
+        if (node.props.events) {
+          Object.keys(node.props.events).forEach((eventName) => {
+            let element = document.querySelector(`[data-id="${node.props.__id}"]`);
+            console.log('el', element)
+            if (element) element!.addEventListener(eventName, node.props.events[eventName]);
+          });
+        }
+      }
     }
-    Object.keys(events).forEach((eventName) => {
-      console.log(eventName)
-      el.addEventListener(eventName, events[eventName]);
-      // el.addEventListener(eventName, events[eventName]);
-    });
   }
 
-  _removeEvents(): void {
+  _removeEventListeners(): void {
     const {events = {}} = this.props;
-    const el = document.querySelector(`[_key=${this._id}]`);
+    const el = document.querySelector(`[data-id="${this._id}"]`);
+    console.log('removeEvents', el)
     if (!el) {
       return;
     }
@@ -79,8 +85,7 @@ export class Component {
   }
 
   _createResources(): void {
-    const {tagName, className} = this._meta;
-    this._element = this._createDocumentElement(tagName, className);
+    this._element = this._createDocumentElement('div');
   }
 
   _init(): void {
@@ -96,20 +101,19 @@ export class Component {
   // Может переопределять пользователь, необязательно трогать
   componentDidMount(): void {}
 
-  _componentDidUpdate(oldProps: Props, newProps: Props): void {
+  _componentDidUpdate(oldProps: AnyObject, newProps: AnyObject): void {
     const response = this.componentDidUpdate(oldProps, newProps);
     if (response) {
-      // console.log('emit render after update')
       this.eventBus.emit(this.EVENTS.FLOW_RENDER);
     }
   }
 
   // Может переопределять пользователь, необязательно трогать
-  componentDidUpdate(oldProps: ProxyHandler<Props>, newProps: ProxyHandler<Props>): boolean {
+  componentDidUpdate(oldProps: ProxyHandler<AnyObject>, newProps: ProxyHandler<AnyObject>): boolean {
     return true;
   }
 
-  setProps = (nextProps: Props): ProxyHandler<Props> | void => {
+  setProps = (nextProps: AnyObject): ProxyHandler<AnyObject> | void => {
     if (!nextProps) {
       return;
     }
@@ -129,18 +133,16 @@ export class Component {
   }
 
   _render(): void {
-    // console.log('render')
     const htmlString = this.render().trim();
-    // const parsedHTML = this.DOMParser.parseFromString(htmlString, 'text/html');
-    // const oldContent = this._element.firstChild;
-    // const newContent = parsedHTML.body.firstChild;
-    this._removeEvents();
-    console.log('oldElement', this._element);
-    // if (oldContent) oldContent.replaceWith(newContent);
-    // this._element.appendChild(newContent);
     this._element.innerHTML = htmlString;
-    this._addEvents();
-    console.log('newElement', this._element);
+
+    let renderedElement = document.querySelector(`[data-id="${this._id}"]`);
+    if (renderedElement) {
+      this._removeEventListeners();
+      renderedElement.replaceWith(this._element);
+    }
+
+    this._addEventListeners();
   }
 
   // Может переопределять пользователь, необязательно трогать
@@ -152,20 +154,15 @@ export class Component {
     return this._element;
   }
 
-  _makePropsProxy(props: Props): ProxyHandler<Props> {
-    // const that = this;
+  _makePropsProxy(props: AnyObject): ProxyHandler<AnyObject> {
     const proxyProps = new Proxy(props, {
       get(target, prop) {
         const value = target[prop];
         return typeof value === 'function' ? value.bind(target) : value;
       },
       set(target, prop, value) {
-        // const oldProps = that.props;
         if (target[prop] !== value) {
-          console.log(target[prop])
           target[prop] = value;
-          console.log(target[prop])
-          // that.eventBus.emit(that.EVENTS.FLOW_CDU, oldProps, target);
           return true;
         }
         return false;
@@ -177,21 +174,8 @@ export class Component {
     return proxyProps;
   }
 
-  _createDocumentElement(tagName: string, className?: string): HTMLElement {
+  _createDocumentElement(tagName: string): HTMLElement {
     // Можно сделать метод, который через фрагменты в цикле создаёт сразу несколько блоков
-    const element = document.createElement(tagName);
-    if (className) {
-      element.classList.add(className);
-    }
-    element.setAttribute('data-id', this._id);
-    return element;
-  }
-
-  show() {
-    this.getContent()!.style.display = 'block';
-  }
-
-  hide() {
-    this.getContent()!.style.display = 'none';
+    return document.createElement(tagName);
   }
 }
