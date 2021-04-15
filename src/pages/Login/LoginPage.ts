@@ -10,44 +10,84 @@ import {Button} from '../../components/Button';
 import {AnyObject} from '../../components/Component/Component';
 import {Screens} from '../Main/Main.context';
 import {Main} from '../Main';
+import {InputWithFloatingLabel} from '../../components/InputWithFloatingLabel';
 
 export class LoginPage extends Component {
   constructor(props: AnyObject) {
     super({
       ...props,
       childNodes: {
-        loginInput: new Input({
+        loginInput: new InputWithFloatingLabel({
           ...props.inputs.login,
-          events: {
-            click: [(e: InputEvent) => {
-              e.preventDefault();
-              console.log(e);
-            }],
+          childNodes: {
+            input: new Input({
+              ...props.inputs.login,
+              events: [{
+                event: 'blur',
+                callback: (e: InputEvent) => {
+                  console.log('123');
+                  console.log(e.target.name);
+                  // this.onInput(e.target.name, e.target.value);
+                  this.props.childNodes[e.target.name].setProps({
+                    isValid: false,
+                  });
+                  this.props.childNodes[e.target.name].props.childNodes.input.setProps({
+                    value: e.target.value,
+                  });
+                },
+              }],
+            }),
           },
         }),
-        passwordInput: new Input({...props.inputs.password}),
+        passwordInput: new InputWithFloatingLabel({
+          ...props.inputs.password,
+          childNodes: {
+            input: new Input({
+              ...props.inputs.password,
+              events: [{
+                event: 'blur',
+                callback: (e: InputEvent) => {
+                  console.log('123');
+                  console.log(e.target.name);
+                  // this.onInput(e.target.name, e.target.value);
+                  this.props.childNodes[e.target.name].setProps({
+                    isValid: false,
+                  });
+                  this.props.childNodes[e.target.name].props.childNodes.input.setProps({
+                    value: e.target.value,
+                  });
+                },
+              }],
+            }),
+          },
+        }),
         submitButton: new Button({
           ...props.buttons.submit,
-          events: {
-            click: [(e) => {
-              e.preventDefault();
-              console.log('123');
-            }],
-          },
+          events: [{
+            event: 'click',
+            callback: (e: InputEvent) => {
+              console.log(e);
+            },
+          }],
         }),
         signInButton: new Button({
           ...props.buttons.signIn,
-          events: {
-            click: [(e) => {
+          events: [{
+            event: 'click',
+            callback: (e: InputEvent) => {
               e.preventDefault();
-              console.log('123');
-            }],
-          },
+              console.log(e);
+            },
+          }],
         }),
       },
-      events: {
-        click: [() => console.log('123')],
-      },
+      events: [{
+        event: 'click',
+        callback: (e: InputEvent) => {
+          e.preventDefault();
+          console.log('5547657');
+        },
+      }],
     });
   }
 
@@ -57,10 +97,17 @@ export class LoginPage extends Component {
         console.log(something);
       },
     });
-    setTimeout(() => {
-      this.setProps({title: 'Enter'});
-      this.props.childNodes.loginInput.setProps({labelName: 'newLogin'});
-    }, 3000);
+    // setTimeout(() => {
+    //   this.setProps({title: 'Enter'});
+    // }, 3000);
+  }
+
+  onInput(input: string, value: string): void {
+    this.props.childNodes[input].setProps({value});
+  }
+
+  validateLogin() {
+    this.props.childNodes.loginInput.setProps({isValid: false});
   }
 
   render() {
@@ -77,11 +124,12 @@ export class LoginPage extends Component {
 
 const main = new Main({
   activeScreen: Screens.LOGIN,
-  screens: {
+  childNodes: {
     [Screens.LOGIN]: new LoginPage(LoginContext),
   },
-  events: {
-    click: [() => console.log('123')],
-  },
+  events: [{
+    event: 'click',
+    callback: () => console.log('123'),
+  }],
 });
 render('body', main);

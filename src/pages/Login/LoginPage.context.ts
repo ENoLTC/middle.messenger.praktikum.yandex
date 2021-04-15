@@ -2,7 +2,7 @@ export const context = {
   inputs: {
     login: {
       type: 'text',
-      name: 'login',
+      name: 'loginInput',
       labelName: 'Логин',
       labelInvalidText: 'Неверный логин',
       required: true,
@@ -12,10 +12,11 @@ export const context = {
         input: [],
         label: [],
       },
+      value: '',
     },
     password: {
       type: 'password',
-      name: 'password',
+      name: 'passwordInput',
       labelName: 'Пароль',
       labelInvalidText: 'Неверный пароль',
       required: true,
@@ -25,6 +26,7 @@ export const context = {
         input: [],
         label: [],
       },
+      value: '',
     },
   },
   buttons: {

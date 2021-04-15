@@ -6,7 +6,7 @@ import {AnyObject} from '../../components/Component/Component';
 
 export class Main extends Component {
   constructor(props) {
-    super(props);
+    super(props, true);
   }
 
   componentDidMount() {
@@ -31,7 +31,7 @@ export class Main extends Component {
     console.log(this.props);
     return template({
       ...this.props,
-      renderedPage: this.props.screens[this.props.activeScreen].render(),
+      renderedPage: this.props.childNodes[this.props.activeScreen].render(),
     });
   }
 }

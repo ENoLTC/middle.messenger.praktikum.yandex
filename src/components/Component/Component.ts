@@ -21,22 +21,26 @@ export class Component {
   _element: Node = {} as Node;
   _meta: Meta;
   _id: string;
+  _isRoot: boolean;
   props: AnyObject;
   eventBus: EventBus;
   /** JSDoc
    * @param {string} tagName
    * @param {string | undefined} className
    * @param {Object} props
+   * @param {boolean | undefined} isRoot
    *
    * @returns {void}
    */
   constructor(
     props: AnyObject = {},
+    isRoot: boolean = false,
   ) {
     this.eventBus = new EventBus();
     this._meta = {props};
 
     this._id = uuidv4();
+    this._isRoot = isRoot;
     this.props = this._makePropsProxy({__id: this._id, ...props});
 
     this._registerEvents();
@@ -54,6 +58,7 @@ export class Component {
           target[prop] = value;
           return true;
         }
+        console.log('not ASDASDAS');
         return false;
       },
       deleteProperty(target, prop) { // перехватываем удаление свойства
@@ -84,9 +89,8 @@ export class Component {
     return document.createElement('template');
   }
 
-  _createDocumentElement(): Node {
-    this._element = this._template.content.cloneNode(true);
-    return this._element;
+  _createDocumentElement(): void {
+    this._element = this._template.content.firstChild.cloneNode(true);
   }
 
   getContent(): Node {
@@ -106,7 +110,7 @@ export class Component {
       return;
     }
 
-    const oldProps = this.props;
+    const oldProps = {...this.props};
 
     this.props = Object.assign(this.props, nextProps);
     this.eventBus.emit(this.EVENTS.FLOW_CDU, oldProps, this.props);
@@ -132,6 +136,20 @@ export class Component {
     return true;
   }
 
+  childNodes(childNodes) {
+    for (const [_, node] of Object.entries(childNodes)) {
+      const renderedElement = document.querySelector(`[data-id="${node.props.__id}"]`);
+      if (renderedElement && node.props.events) {
+        node.props.events.forEach((event) => {
+          renderedElement.addEventListener(event.event, event.callback);
+        });
+      }
+      if (node.props.hasOwnProperty('childNodes')) {
+        this.childNodes(node.props.childNodes);
+      }
+    }
+  }
+
   _render(): void {
     this._template.innerHTML = this.render().trim();
     this._createDocumentElement();
@@ -140,9 +158,28 @@ export class Component {
     if (renderedElement) {
       this._removeEventListeners();
       renderedElement.replaceWith(this._element);
-    }
+      if (this.props.events) {
+        this.props.events.forEach((event) => {
+          const el = document.querySelector(`[data-id="${this._id}"]`);
+          el.addEventListener(event.event, event.callback);
+        });
+      }
+      if (this.props.childNodes) {
+        this.childNodes(this.props.childNodes);
+      }
+    } else if (this._isRoot) {
+      const root = document.querySelector('body');
+      root.appendChild(this._element);
+      this.props.events.forEach((event) => {
+        const el = document.querySelector(`[data-id="${this._id}"]`);
+        console.log(event.event);
+        el.addEventListener(event.event, event.callback);
+      });
 
-    this._addEventListeners();
+      if (this.props.childNodes) {
+        this.childNodes(this.props.childNodes);
+      }
+    }
   }
 
   // Может переопределять пользователь, необязательно трогать
@@ -153,39 +190,9 @@ export class Component {
   _addEventListeners(): void {
     const {events = {}} = this.props;
     const el = document.querySelector(`[data-id="${this._id}"]`);
-    console.log('addEvents', el);
-    if (!el) {
-      return;
-    }
-    Object.keys(events).forEach((eventName) => {
-      console.log(eventName, events[eventName]);
-      if (el) {
-        el.addEventListener(eventName, events[eventName]);
-      }
-      this._element.addEventListener(eventName, events[eventName]);
-    });
-    if (this.props.childNodes) {
-      for (const [_, node] of Object.entries(this.props.childNodes)) {
-        if (node.props.events) {
-          Object.keys(node.props.events).forEach((eventName) => {
-            const element = document.querySelector(`[data-id="${node.props.__id}"]`);
-            console.log('el', element);
-            if (element) element!.addEventListener(eventName, node.props.events[eventName]);
-          });
-        }
-      }
-    }
   }
 
   _removeEventListeners(): void {
     const {events = {}} = this.props;
-    // const el = document.querySelector(`[data-id="${this._id}"]`);
-    // console.log('removeEvents', el);
-    // if (!el) {
-    //   return;
-    // }
-    // Object.keys(events).forEach((eventName) => {
-    //   el!.removeEventListener(eventName, events[eventName]);
-    // });
   }
 }
