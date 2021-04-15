@@ -80,5 +80,8 @@ const main = new Main({
   screens: {
     [Screens.LOGIN]: new LoginPage(LoginContext),
   },
+  events: {
+    click: [() => console.log('123')],
+  },
 });
 render('body', main);

@@ -159,19 +159,22 @@ export class Component {
     }
     Object.keys(events).forEach((eventName) => {
       console.log(eventName, events[eventName]);
+      if (el) {
+        el.addEventListener(eventName, events[eventName]);
+      }
       this._element.addEventListener(eventName, events[eventName]);
     });
-    // if (this.props.childNodes) {
-    //   for (const [_, node] of Object.entries(this.props.childNodes)) {
-    //     if (node.props.events) {
-    //       Object.keys(node.props.events).forEach((eventName) => {
-    //         const element = document.querySelector(`[data-id="${node.props.__id}"]`);
-    //         console.log('el', element);
-    //         if (element) element!.addEventListener(eventName, node.props.events[eventName]);
-    //       });
-    //     }
-    //   }
-    // }
+    if (this.props.childNodes) {
+      for (const [_, node] of Object.entries(this.props.childNodes)) {
+        if (node.props.events) {
+          Object.keys(node.props.events).forEach((eventName) => {
+            const element = document.querySelector(`[data-id="${node.props.__id}"]`);
+            console.log('el', element);
+            if (element) element!.addEventListener(eventName, node.props.events[eventName]);
+          });
+        }
+      }
+    }
   }
 
   _removeEventListeners(): void {

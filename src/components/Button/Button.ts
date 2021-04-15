@@ -4,8 +4,8 @@ import './Button.scss';
 import {Component} from '../Component';
 
 export class Button extends Component {
-  constructor(props, rootSelector) {
-    super(props, rootSelector);
+  constructor(props) {
+    super(props);
   }
 
   render(): string {
