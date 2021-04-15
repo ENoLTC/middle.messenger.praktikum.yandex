@@ -6,8 +6,8 @@ import {Component} from '../../components/Component';
 import {Main} from '../Main';
 import {Screens} from '../Main/Main.context';
 import {render} from '../../utils/renderDOM';
-import {ChatMenu} from '../ChatMenu';
-import {Profile} from '../Profile';
+import {ChatMenu} from '../../blocks/ChatMenu';
+import {Profile} from '../../blocks/Profile';
 import {Button} from '../../components/Button';
 import {ProfileEditInput} from '../../components/ProfileEditInput';
 

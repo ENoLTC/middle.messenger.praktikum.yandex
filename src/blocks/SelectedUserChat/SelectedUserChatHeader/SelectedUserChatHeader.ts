@@ -1,7 +1,7 @@
 import Handlebars from 'handlebars';
 import {selectedUserChatHeaderTemplate} from './SelectedUserChatHeader.handlebars';
 import './SelectedUserChatHeader.scss';
-import {Component} from '../../../../components/Component';
+import {Component} from '../../../components/Component';
 
 export class SelectedUserChatHeader extends Component {
   constructor(props: any) {

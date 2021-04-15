@@ -1,7 +1,7 @@
 import Handlebars from 'handlebars';
 import {selectedUserChatTemplate} from './SelectedUserChat.handlebars';
 import './SelectedUserChat.scss';
-import {Component} from '../../../components/Component';
+import {Component} from '../../components/Component';
 import {SelectedUserChatHeader} from './SelectedUserChatHeader';
 import {SelectedUserChatContent} from './SelectedUserChatContent';
 import {SelectedUserChatFooter} from './SelectedUserChatFooter';

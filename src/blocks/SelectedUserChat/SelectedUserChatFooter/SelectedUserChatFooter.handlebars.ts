@@ -1,5 +1,5 @@
-import pinSVG from '../../../../../static/assets/icons/pin.svg';
-import sendSVG from '../../../../../static/assets/icons/arrow-right.svg';
+import pinSVG from '../../../../static/assets/icons/pin.svg';
+import sendSVG from '../../../../static/assets/icons/arrow-right.svg';
 
 export const selectedUserChatFooterTemplate = `
   <footer class="chat__footer" data-id="{{__id}}">

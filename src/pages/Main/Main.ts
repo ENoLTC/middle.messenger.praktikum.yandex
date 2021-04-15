@@ -2,6 +2,7 @@ import Handlebars from 'handlebars';
 import './Main.scss';
 import {Component} from '../../components/Component';
 import {mainTemplate} from './Main.handlebars';
+import {AnyObject} from '../../components/Component/Component';
 
 export class Main extends Component {
   constructor(props) {
@@ -14,10 +15,20 @@ export class Main extends Component {
         console.log(something);
       },
     });
+    // setTimeout(() => {
+    //   // this.props.screens.login.setProps({tit: 'FDGFHRSHR'});
+    //   // this.props.screens.login.props.childNodes.loginInput.setProps({isValid: false});
+    // }, 3000);
+  }
+
+  componentDidUpdate(oldProps: ProxyHandler<AnyObject>, newProps: ProxyHandler<AnyObject>): boolean {
+    console.log('main', oldProps, newProps);
+    return true;
   }
 
   render(): string {
     const template = Handlebars.compile(mainTemplate);
+    console.log(this.props);
     return template({
       ...this.props,
       renderedPage: this.props.screens[this.props.activeScreen].render(),

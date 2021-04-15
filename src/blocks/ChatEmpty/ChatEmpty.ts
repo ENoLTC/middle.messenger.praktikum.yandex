@@ -1,7 +1,7 @@
 import Handlebars from 'handlebars';
 import {chatEmptyTemplate} from './ChatEmpty.handlebars';
 import './ChatEmpty.scss';
-import {Component} from '../../../components/Component';
+import {Component} from '../../components/Component';
 
 export class ChatEmpty extends Component {
   constructor(props: any) {

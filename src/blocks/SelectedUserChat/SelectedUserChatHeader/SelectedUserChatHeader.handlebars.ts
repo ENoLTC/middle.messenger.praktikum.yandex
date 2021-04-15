@@ -1,4 +1,4 @@
-import moreSVG from '../../../../../static/assets/icons/more.svg';
+import moreSVG from '../../../../static/assets/icons/more.svg';
 
 export const selectedUserChatHeaderTemplate = `
   <header class="chat__header" data-id="{{__id}}">
