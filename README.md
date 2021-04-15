@@ -4,9 +4,8 @@
 
 Потыкать можно [тут](https://heuristic-kalam-dfa7e9.netlify.app/)
 
-Ссылка на [PR](https://github.com/ENoLTC/middle.messenger.praktikum.yandex/pull/2)
+Ссылка на [PR](https://github.com/ENoLTC/middle.messenger.praktikum.yandex/pull/1)
 https://github.com/ENoLTC/middle.messenger.praktikum.yandex/pull/1
-https://github.com/ENoLTC/middle.messenger.praktikum.yandex/pull/2
 
 Самостоятельная работа в Я.Практикуме
 
