@@ -35,7 +35,15 @@ export class LoginPage extends Component {
                     value: e.target.value,
                   });
                 },
-              }],
+              }, {
+                event: 'focus',
+                callback: (e: InputEvent) => {
+                  console.log(e.target.name);
+                  // this.onInput(e.target.name, e.target.value);
+                  this.props.childNodes[e.target.name].setProps({
+                    isValid: true,
+                  });
+                },],
             }),
           },
         }),
@@ -55,6 +63,16 @@ export class LoginPage extends Component {
                   });
                   this.props.childNodes[e.target.name].props.childNodes.input.setProps({
                     value: e.target.value,
+                  });
+                },
+              },
+              {
+                event: 'focus',
+                callback: (e: InputEvent) => {
+                  console.log(e.target.name);
+                  // this.onInput(e.target.name, e.target.value);
+                  this.props.childNodes[e.target.name].setProps({
+                    isValid: true,
                   });
                 },
               }],
