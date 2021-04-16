@@ -1,24 +1,134 @@
 @import 'variables';
 
 .main {
-  display: flex;
-  min-height: 100vh;
-  height: 100%;
-  background-color: $background;
   align-items: center;
+  background-color: $background;
+  display: flex;
+  height: 100%;
   justify-content: center;
+  min-height: 100vh;
 }
 
 .workspace {
+  background-color: $white;
   display: flex;
-  width: 100%;
   height: 100%;
   min-height: 100vh;
-  background-color: $white;
+  width: 100%;
 }
 
 .screen-href {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+
+.input-container {
+  position: relative;
+
+  &_password {
+    margin-top: 16px;
+  }
+
+  .input {
+    width: 100%;
+    padding: 7px 0;
+    margin: 12px 0 20px 0;
+    border: 0;
+    border-bottom: 1px solid $secondary;
+
+    &:focus {
+      outline: none;
+    }
+
+    &:focus + label, &:valid + label, &:not(:placeholder-shown) + label {
+      font-size: $font-size-small;
+      bottom: 52px;
+    }
+
+    &::placeholder {
+      color: transparent;
+    }
+  }
+
+  .label {
+    position: absolute;
+    pointer-events: none;
+    cursor: text;
+    bottom: 27px;
+    left: 0;
+    width: 100%;
+    color: $secondary-grey;
+    transition: 0.2s;
+
+    &_invalid {
+      font-size: $font-size-small;
+      color: $primary-red;
+      bottom: 0;
+    }
+  }
+}
+
+.button {
   display: flex;
   align-items: center;
   justify-content: center;
+  text-align: center;
+  padding: 12px 0;
+  border: none;
+  border-radius: 8px;
+
+  &:focus {
+    outline: 0;
+  }
+
+  &_primary {
+    width: 100%;
+    cursor: pointer;
+    background-color: $secondary;
+    color: $white;
+  }
+
+  &_text-like {
+    cursor: pointer;
+    padding: 0;
+    margin-top: 14px;
+    background: none;
+    width: fit-content;
+    align-self: center;
+    color: $secondary;
+  }
+
+  &_error {
+    color: $primary-red;
+  }
+
+  &_stop-editing {
+    display: flex;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: $primary-blue;
+    cursor: pointer;
+  }
+
+  &_text-blue {
+    color: $primary-blue;
+  }
+
+  &_text-red {
+    color: $primary-red;
+  }
+
+  &_profile-change {
+    display: flex;
+    width: 100%;
+    justify-content: flex-start;
+    text-align: left;
+    margin: 0;
+    padding: 10px 0;
+    border: 0;
+    border-radius: 0;
+    border-bottom: 1px solid $primary-grey;
+  }
 }
